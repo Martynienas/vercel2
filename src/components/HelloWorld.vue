@@ -1,5 +1,5 @@
 <template>
-  <h1>Speed Typer</h1>
+  <h1>Latin Speed Typer</h1>
   <div>
     <h3>Time: {{ time }}</h3>
     <h3>
@@ -29,7 +29,7 @@
     @keyup.space="processInput($event)"
   />
   <button :disabled="isButtonDisabled" @click="startTimer()">Start</button>
-  <button :disabled="!isButtonDisabled" @click="reloadPage()">Restart</button>
+  <button :disabled="!isButtonDisabled" @click="reloadPage()">Reset</button>
 </template>
 
 <script>
@@ -81,9 +81,14 @@ export default {
       let tempValue = this.time;
       clearInterval(this.timer);
       this.time = tempValue;
+      let correctAnswers = this.keywords.filter((keyword) => keyword.correct)
+        .length;
       alert(
         "Your scrore is : " +
-          tempValue * this.keywords.filter((keyword) => keyword.correct).length
+          (parseInt(correctAnswers) * 100 - parseInt(tempValue) * 10) +
+          "  You avarage typing speed is " +
+          (60 * (parseInt(correctAnswers) / parseInt(tempValue)).toFixed(2) +
+            " words per minute")
       );
     },
     reloadPage() {
@@ -98,7 +103,7 @@ export default {
       )
       .then((response) => {
         this.axiostest = response.data;
-        var ar = this.axiostest.split(" ", 51);
+        var ar = this.axiostest.split(" ", 26);
         ar.shift();
         ar.slice(-1);
         this.keywords = ar.map((keyword) => {
@@ -109,7 +114,6 @@ export default {
             pending: true,
           };
         });
-        console.log(this.keywords);
       })
       .catch(function (error) {
         console.log(error);

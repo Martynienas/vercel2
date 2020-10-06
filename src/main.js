@@ -1,8 +1,7 @@
-import Vue from 'vue'
-import App from './App.vue'
-
-Vue.config.productionTip = false
-
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+import { createApp } from 'vue'
+import App from './components/HelloWorld.vue'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+const app = createApp(App)
+app.use(VueAxios, axios)
+app.mount('#app')
